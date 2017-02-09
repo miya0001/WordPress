@@ -30,8 +30,9 @@ matrix:
         - mysql-client-core-5.6
         - mysql-client-5.6
   - php: 7.0
+    env: PHPUNIT6=true
   - php: 7.1
-    phpunit: latest
+    env: PHPUNIT6=true
   - php: nightly
   allow_failures:
   - php: hhvm
@@ -52,6 +53,10 @@ before_install:
     curl https://raw.githubusercontent.com/tollmanz/wordpress-pecl-memcached-object-cache/584392b56dc4adbe52bd2c7b86f875e23a3e5f75/object-cache.php > src/wp-content/object-cache.php
     echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   fi
+- |
+  if [[ "$PHPUNIT6" == "true" ]]; then
+    composer global require phpunit/phpunit
+  fi
 before_script:
 - npm install -g npm
 - npm install -g grunt-cli
@@ -61,6 +66,7 @@ before_script:
 - phpenv versions
 - npm --version
 - node --version
+- phpunit --version
 script: grunt $WP_TRAVISCI
 notifications:
   slack:
