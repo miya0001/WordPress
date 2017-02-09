@@ -55,7 +55,8 @@ before_install:
   fi
 - |
   if [[ "$PHPUNIT6" == "true" ]]; then
-    composer global require phpunit/phpunit
+    composer require phpunit/phpunit
+    export PATH=vendor/bin:$PATH
   fi
 before_script:
 - npm install -g npm
